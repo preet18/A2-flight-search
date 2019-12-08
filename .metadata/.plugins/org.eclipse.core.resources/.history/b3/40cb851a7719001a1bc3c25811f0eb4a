@@ -1,0 +1,12 @@
+package com.Dao;
+
+public class SearchFlightDao {
+
+
+@Repository
+public interface WeatherRepository extends JpaRepository<Weather, Integer> {
+
+	@Query("select * from Weather where sensorId = ?1 and dateTime > ?2 and dateTime < ?3")
+	public List<Weather> findAllBySensorIdAndTimeRange(String sensorId, String from, String to);
+}
+}

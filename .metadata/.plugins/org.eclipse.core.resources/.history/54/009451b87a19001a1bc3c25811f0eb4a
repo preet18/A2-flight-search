@@ -1,0 +1,40 @@
+package com.Service;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.Dao.SearchFlightInterface;
+import com.dto.SearchFlight;
+import com.model.AerothonFlights;
+
+@Service
+public class SearchFlightService {
+
+	@Autowired
+	SearchFlightInterface searchFlightInterface;
+	
+	public Map<String, Object> searchFlight(SearchFlight searchFlight) {
+		Map<String, Object> map =new HashMap<String, Object>();
+		try {
+			String fromLocation = searchFlight.getFromLocation();
+			String toLocation = searchFlight.getToLocation();
+			List<AerothonFlights> flightsList = searchFlightInterface.findAllByFromLocationAndToLocation(fromLocation, toLocation);
+			
+			map.put("success", true);
+			map.put("flights", flightsList);
+			return map;
+			
+			
+			
+		}catch(Exception ex) {
+			map.put("success", false);
+			
+		}
+		
+	}
+
+}

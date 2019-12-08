@@ -1,0 +1,21 @@
+package com.model;
+
+import java.sql.Timestamp;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+
+@Entity
+@Table
+public class AerothonFlights {
+
+	private String FromLocation;
+	private String ToLocation;
+	private Timestamp DepartureTiming;
+	private Timestamp ArrivalTiming;
+	private int Capacity;
+	
+	
+	
+}

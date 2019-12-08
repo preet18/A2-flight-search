@@ -1,0 +1,51 @@
+package com.model;
+
+import java.sql.Timestamp;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+
+@Entity
+@Table
+public class AerothonFlights {
+
+	private String FromLocation;
+	private String ToLocation;
+	private Timestamp DepartureTiming;
+	private Timestamp ArrivalTiming;
+	private int Capacity;
+	public String getFromLocation() {
+		return FromLocation;
+	}
+	public void setFromLocation(String fromLocation) {
+		FromLocation = fromLocation;
+	}
+	public String getToLocation() {
+		return ToLocation;
+	}
+	public void setToLocation(String toLocation) {
+		ToLocation = toLocation;
+	}
+	public Timestamp getDepartureTiming() {
+		return DepartureTiming;
+	}
+	public void setDepartureTiming(Timestamp departureTiming) {
+		DepartureTiming = departureTiming;
+	}
+	public Timestamp getArrivalTiming() {
+		return ArrivalTiming;
+	}
+	public void setArrivalTiming(Timestamp arrivalTiming) {
+		ArrivalTiming = arrivalTiming;
+	}
+	public int getCapacity() {
+		return Capacity;
+	}
+	public void setCapacity(int capacity) {
+		Capacity = capacity;
+	}
+	
+	
+	
+}

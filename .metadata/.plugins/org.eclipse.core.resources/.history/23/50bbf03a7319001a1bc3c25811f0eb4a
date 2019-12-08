@@ -1,0 +1,11 @@
+package com.dto;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude
+public class SearchFlight {
+
+	private String fromLocation;
+	
+	private String
+}

@@ -1,0 +1,80 @@
+package com.model;
+
+import java.sql.Timestamp;
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+
+@Entity
+@Table
+public class AerothonFlights {
+
+	@Column(name="FROM_LOCATION")
+	private String FromLocation;
+	
+	@Column(name="TO_LOCATION")
+	private String ToLocation;
+	
+	@Column(name="DEPARTURE_DATE")
+	private Date DepartureDate;
+	
+	@Column(name="ARRIVAL_DATE")
+	private Date ArrivalDate;
+	
+	@Column(name="DEPARTURE_TIMING")
+	private Timestamp DepartureTiming;
+	
+	@Column(name="ARRIVAL_TIMING")
+	private Timestamp ArrivalTiming;
+	
+	@Column(name="CAPACITY")
+	private int Capacity;
+	public String getFromLocation() {
+		return FromLocation;
+	}
+	public void setFromLocation(String fromLocation) {
+		FromLocation = fromLocation;
+	}
+	public String getToLocation() {
+		return ToLocation;
+	}
+	public void setToLocation(String toLocation) {
+		ToLocation = toLocation;
+	}
+	public Timestamp getDepartureTiming() {
+		return DepartureTiming;
+	}
+	public void setDepartureTiming(Timestamp departureTiming) {
+		DepartureTiming = departureTiming;
+	}
+	public Timestamp getArrivalTiming() {
+		return ArrivalTiming;
+	}
+	public void setArrivalTiming(Timestamp arrivalTiming) {
+		ArrivalTiming = arrivalTiming;
+	}
+	public int getCapacity() {
+		return Capacity;
+	}
+	public void setCapacity(int capacity) {
+		Capacity = capacity;
+	}
+	public Date getDepartureDate() {
+		return DepartureDate;
+	}
+	public void setDepartureDate(Date departureDate) {
+		DepartureDate = departureDate;
+	}
+	public Date getArrivalDate() {
+		return ArrivalDate;
+	}
+	public void setArrivalDate(Date arrivalDate) {
+		ArrivalDate = arrivalDate;
+	}
+	
+	
+	
+}

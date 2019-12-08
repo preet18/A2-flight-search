@@ -1,0 +1,21 @@
+package com.controller;
+
+import java.util.Map;
+
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.dto.SearchFlight;
+
+@RestController
+public class searchFlight {
+
+	@Autowired 
+	searchG
+	@RequestMapping("/searchFlight")
+	public Map<String, Object> searchFlight(@RequestBody SearchFlight searchFlight){
+		return null;
+		
+	}
+}
