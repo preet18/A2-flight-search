@@ -1,0 +1,148 @@
+package com.Service;
+
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.Dao.SearchCityInterface;
+import com.Dao.SearchFlightInterface;
+import com.dto.SearchFlight;
+import com.model.AerothonFlights;
+import com.model.City;
+
+@Service
+public class SearchFlightService {
+
+	@Autowired
+	SearchFlightInterface searchFlightInterface;
+	
+	@Autowired
+	SearchCityInterface searchCityInterface;
+	
+	public Map<String, Object> searchFlightFromToLocation(SearchFlight searchFlight) {
+		Map<String, Object> map =new HashMap<String, Object>();
+		try {
+			String fromLocation = searchFlight.getFromLocation();
+			String toLocation = searchFlight.getToLocation();
+			List<AerothonFlights> flightsFromToList = searchFlightInterface.findAllByFromToLocation(fromLocation, toLocation);
+			//Connecting Flights
+			List<AerothonFlights> flightsFromList = searchFlightInterface.findAllByFromLocation(fromLocation, toLocation);
+			List<AerothonFlights> flightsToList = searchFlightInterface.findAllByToLocation(fromLocation, toLocation);
+			
+			Map<AerothonFlights, List<AerothonFlights>> connectingFlights = getConnections(flightsFromList, flightsToList);
+			
+			
+			if(flightsFromToList!=null && flightsFromList.size()>0) {
+				map.put("success", true);
+				map.put("directFlights", flightsFromList);
+			}
+			if(connectingFlights!=null && connectingFlights.size()>0) {
+				map.put("success", true);
+				map.put("connectingFlights", connectingFlights);
+			}
+			if(!map.containsKey("success")) {
+				map.put("success", false);
+				map.put("message", "No flights found in this route");
+			}
+			/*List<AerothonFlights> availableFlightsList = new ArrayList<>();
+			for(AerothonFlights af : flightsFromToList) {
+				if(af.getCurrentCapacity()>0) {
+					availableFlightsList.add(af);
+				}
+			}
+			
+			if(availableFlightsList.size()>0) {
+				map.put("success", true);
+				map.put("flights", availableFlightsList);
+			}else {
+				map.put("success", false);
+				map.put("message", "To flights found in this route");
+			}*/
+		}catch(Exception ex) {
+			map.put("success", false);
+			map.put("message", "Unable To Process Request");
+		}
+		return map;
+		
+	}
+
+	private Map<AerothonFlights, List<AerothonFlights>> getConnections(List<AerothonFlights> flightsFromList, List<AerothonFlights> flightsToList) {
+		Map<AerothonFlights, List<AerothonFlights>> connectingFlights = new HashMap<AerothonFlights, List<AerothonFlights>>();
+		for(AerothonFlights af : flightsFromList) {
+			List<AerothonFlights> result = getConnectingFlights(af, flightsToList);
+			if(result!=null && result.size()>0) {
+				connectingFlights.put(af, result);
+			}
+		}
+		return connectingFlights;
+		
+	}
+
+	private List<AerothonFlights> getConnectingFlights(AerothonFlights af, List<AerothonFlights> flightsToList) {
+		List<AerothonFlights> result = new ArrayList<AerothonFlights>();
+		for(AerothonFlights e : flightsToList) {
+			if((e.getFromLocation()==af.getToLocation())&& isTimingPossible(af.getArrivalTiming(),e.getDepartureTiming())) {
+				result.add(e);
+			}
+		}
+		return result;
+	}
+
+	private boolean isTimingPossible(Timestamp arrivalTiming, Timestamp departureTiming) {
+		if(arrivalTiming.before(departureTiming)) {
+			return true;
+		}
+		return false;
+	}
+
+	public Map<String, Object> searchFlightFromToLocationAndDepartureDate(SearchFlight searchFlight) {
+		Map<String, Object> map =new HashMap<String, Object>();
+		try {
+			String fromLocation = searchFlight.getFromLocation();
+			String toLocation = searchFlight.getToLocation();
+			Date departureDate = searchFlight.getDepartureDate();
+			List<AerothonFlights> flightsList = searchFlightInterface.findAllByFromToLocationAndDepatureDate(fromLocation, toLocation, departureDate);
+			//List<AerothonFlights> flightsListBasedOnDate = searchFlightInterface.findallByDepartureDate(departureDate);
+			
+			List<AerothonFlights> availableFlightsList = new ArrayList<>();
+			for(AerothonFlights af : flightsList) {
+				if(af.getCurrentCapacity()>0) {
+					availableFlightsList.add(af);
+				}
+			}
+			
+			if(availableFlightsList.size()>0) {
+				map.put("success", true);
+				map.put("flights", availableFlightsList);
+			}else {
+				map.put("success", false);
+				map.put("message", "To flights found in this route");
+			}
+		}catch(Exception ex) {
+			map.put("success", false);
+			map.put("message", "Unable To Process Request");
+		}
+		return map;
+		
+	}
+
+	public Map<String, Object> getCities() {
+		Map<String, Object> map =new HashMap<String, Object>();
+		try {
+			List<City> cities = searchCityInterface.findAll();
+			map.put("success", true);
+			map.put("flights", cities);
+		}catch(Exception ex) {
+			map.put("success", false);
+			map.put("message", "Unable To Process Request");
+		}
+		return map;
+	}
+	
+}
